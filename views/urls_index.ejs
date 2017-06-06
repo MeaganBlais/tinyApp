@@ -10,17 +10,11 @@
         <input type="submit" value="Submit">
     </form>
 
-    <table style="width:35%">
-        <tr>
-            <th>URL</th>
-            <th>short URL<th>
-        </tr>
-            <td>example-1</td>
-            <td>example-1b</td>
-        </tr>
-    </table>
-
-
-
+    <ul>
+      <li>URL    shortURL</li>
+      <% for (key in urls) { %>
+      <li><%=key%>   <%=urls[key]%></li>
+      <% } %>
+    </ul>
 </body>
 </html>
