@@ -27,6 +27,10 @@ app.get('/hello', (req, res) => {
     res.end('<html><body>Hello <b>World</b></body></html>\n');
 });
 
+app.get('/register', (req, res) => {
+  res.render('register');
+})
+
 app.get('/urls', (req, res) => {
     let templateVars = {
       username: req.cookies["username"],
@@ -36,7 +40,7 @@ app.get('/urls', (req, res) => {
     res.render('urls_index', templateVars);
 });
 
-app.get("/urls/new", (req, res) => {
+app.get('/urls/new', (req, res) => {
   let templateVars = {
     urls: urlDatabase,
     username: req.cookies["username"]
@@ -53,7 +57,7 @@ app.get('/urls/:id', (req, res) => {
     res.render('urls_show', templateVars);
 });
 
-app.get("/u/:shortURL", (req, res) => {
+app.get('/u/:shortURL', (req, res) => {
   let longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
@@ -65,6 +69,12 @@ app.post('/login', (req, res) => {
 
 app.post('/logout', (req, res) => {
   res.clearCookie('username');
+  res.redirect('/urls');
+});
+
+app.post('/register', (req, res) => {
+  // console.log(88, req.body); //test
+  console.log(req.body.email)
   res.redirect('/urls');
 });
 
