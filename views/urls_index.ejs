@@ -1,4 +1,4 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>TinyApp</title>
@@ -7,17 +7,29 @@
   <header>
     <% include partials/_header %>
   </header>
-    <form action="/urls_index" method="POST" style="">
-        <label for="url">Enter url: </label>
-        <input id="url" type="text" name=""> 
-        <input type="submit" value="Submit">
-    </form>
+  <ul>
+    <li>
+        <form action="/urls_index" method="POST" style="">
+            <label for="url">Enter url: </label>
+            <input id="url" type="text" name="">
+            <input type="submit" value="Submit">
+        </form>
+    </li>
+      <% for (url in urls) { %>
+        <li>
+          <form action= <%= `/urls/${url}/delete` %> method="POST" style="margin:150px;">
+              <label> <%= url %> <%= urls[url] %> </label>
+              <input type="submit" value="Delete">
+          </form>
+          <% } %>
+        </li>
 
-    <ul>
-      <li>URL    shortURL</li>
-      <% for (key in urls) { %>
-      <li><%=key%>   <%=urls[key]%></li>
-      <% } %>
-    </ul>
+        <!-- Removed since the 'delete' form includes all the urls
+        <li>URL    shortURL</li>
+        <% for (key in urls) { %>
+        <li><%=key%>   <%=urls[key]%></li>
+        <% } %> -->
+
+  </ul>
 </body>
 </html>

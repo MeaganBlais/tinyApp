@@ -1,7 +1,8 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 8080; 
-const bodyParser = require("body-parser");
+const PORT = process.env.PORT || 8080;
+const bodyParser = require('body-parser');
+
 
 app.set('view engine', 'ejs');
 
@@ -34,7 +35,7 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get('/urls/:id', (req, res) => {
-    let templateVars = { shortURL: req.params.id, url: urlDatabase[req.params.id]};
+    let templateVars = { shortURL: req.params.id, longURL: urlDatabase[req.params.id]};
     res.render('urls_show', templateVars);
 });
 
@@ -53,6 +54,12 @@ app.post("/urls", (req, res) => {
     res.redirect("/urls/" + shortURL);
 });
 
+// deleting the actual object
+app.post("/urls/:id/delete", (req, res) => {
+  delete urlDatabase[req.params.id];
+  res.redirect("/urls");
+});
+
 app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}!`);
 });
@@ -66,5 +73,3 @@ function generateRandomString() {
   return result;
 }
 generateRandomString()
-
-
