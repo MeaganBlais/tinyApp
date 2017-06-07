@@ -6,9 +6,13 @@
   <header>
     <% include partials/_header %>
   </header>
-    <form action="/urls" method="POST" style="">
-        <label for="shortURL">ShortURL:<%=shortURL%></label>
-        <label for="longURL">LongURL:<%=longURL%></label>
+    <form action="/urls/<%= shortURL %>" method="POST" style="">
+        <label for="shortURL">ShortURL: <%=shortURL%></label><br>
+        <label for="longURL"></label>
+        <input id="longURL" type="text" name="longURL" placeholder= "<%= longURL %>" style="">
+        <input type="submit" value="Update">
     </form>
+
+
 </body>
 </html>
