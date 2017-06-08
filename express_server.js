@@ -22,7 +22,13 @@ const users = {
   }
 }
 
-
+const getUsername = function (userId) {
+  if (userId === undefined) {
+    return undefined;
+  } else {
+    return users[userId].email;
+  }
+}
 
 app.set('view engine', 'ejs');
 
@@ -48,7 +54,7 @@ app.get('/register', (req, res) => {
 app.get('/urls', (req, res) => {
     let templateVars = {
       urls: urlDatabase,
-      username: users[req.cookies["userId"]].email
+      username: getUsername(req.cookies["userId"])
     };
     res.render('urls_index', templateVars);
 });
@@ -56,7 +62,8 @@ app.get('/urls', (req, res) => {
 app.get('/urls/new', (req, res) => {
   let templateVars = {
     urls: urlDatabase,
-    username: users[req.cookies["userId"]].email
+    username: getUsername(req.cookies["userId"])
+    // username: users[req.cookies["userId"]].email
   };
   res.render("urls_new", templateVars);
 });
@@ -65,7 +72,7 @@ app.get('/urls/:id', (req, res) => {
     let templateVars = {
       shortURL: req.params.id,
       longURL: urlDatabase[req.params.id],
-      username: users[req.cookies["userId"]].email
+      username: getUsername(req.cookies["userId"])
     };
     res.render('urls_show', templateVars);
 });
