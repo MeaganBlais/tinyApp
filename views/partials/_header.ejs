@@ -2,20 +2,12 @@
 <html lang="en">
 <head> </head>
   <body>
-    <% if (typeof(username) === 'undefined') { %>
-    <header>Welcome!</header>
-       <form action="/login" method="POST" style="">
-          <label for="username">Enter a username:</label>
-          <input id="username" type="text" name="username" placeholder="username" style="">
-          <input type="submit" value="Submit">
-        </form>
-
-    <% } else { %>
-        <header>Welcome! <%= username %></header>
+    <header>Welcome! <%= username %></header>
         <form action="/logout" method="POST" style="">
           <label for="logout"></label>
           <input type="submit" value="logout">
         </form>
-    <% } %>
+        <a href="/login">login</a>
+        <a href="/register">register</a>
   </body>
 </html>
