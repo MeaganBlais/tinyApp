@@ -4,16 +4,30 @@ const PORT = process.env.PORT || 8080;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
+const urlDatabase = {
+    'b2xVn2': 'http://www.lighthouselabs.ca',
+    '9sm5xK': 'http://www.google.com'
+};
+
+const users = {
+  "userRandomID": {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur"
+  },
+ "user2RandomID": {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk"
+  }
+}
+
+
 
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
-
-const urlDatabase = {
-    'b2xVn2': 'http://www.lighthouselabs.ca',
-    '9sm5xK': 'http://www.google.com'
-};
 
 app.get('/', (req, res) => {
     res.end('Hello!');
@@ -72,11 +86,32 @@ app.post('/logout', (req, res) => {
   res.redirect('/urls');
 });
 
+// app.post('/register', (req, res) => {
+//   console.log(req.body.email)
+//   res.redirect('/urls');
+// });
+
 app.post('/register', (req, res) => {
-  // console.log(88, req.body); //test
-  console.log(req.body.email)
+    let user_id = generateRandomString();
+    users[user_id] = {
+      id: user_id,
+      email: req.body.email,
+      password: req.body.password
+    };
+    res.cookie(user_id);
+
+  console.log(users);
   res.redirect('/urls');
 });
+
+
+
+
+
+
+
+
+
 
 app.post("/urls", (req, res) => {
     let longURL = req.body.longURL;
