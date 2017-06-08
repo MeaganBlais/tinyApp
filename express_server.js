@@ -93,16 +93,25 @@ app.post('/logout', (req, res) => {
 
 app.post('/register', (req, res) => {
     let user_id = generateRandomString();
-    users[user_id] = {
-      id: user_id,
-      email: req.body.email,
-      password: req.body.password
-    };
-    res.cookie(user_id);
 
-  console.log(users);
+    for (x in users) {
+      if (users[x].email === req.body.email) {
+          return res.status(400).send('Email address already in system.');
+      } else if (req.body.email === "" || req.body.password === "") {
+          return res.status(400).send('Please enter BOTH email and password.');
+      } else {
+          users[user_id] = {
+            id: user_id,
+            email: req.body.email,
+            password: req.body.password
+          }
+          res.cookie(user_id);
+      };
+    }
+    console.log(users);
   res.redirect('/urls');
 });
+
 
 
 
