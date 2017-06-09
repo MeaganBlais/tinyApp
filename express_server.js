@@ -5,15 +5,17 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 const urlDatabase = {
-    'b2xVn2': 'http://www.lighthouselabs.ca',
-    '9sm5xK': 'http://www.google.com'
+  'user_id':
+    {'b2xVn2': 'http://www.lighthouselabs.ca', 'dsfsgg': 'http://www.google.com'},
+  'user_id':
+    {'9sm5xK': 'http://www.google.com'}
 };
 
 const users = {
   "userRandomID": {
     id: "userRandomID",
     email: "user@example.com",
-    password: "purple-monkey-dinosaur"
+    password: "a"
   },
  "user2RandomID": {
     id: "user2RandomID",
@@ -64,15 +66,34 @@ app.get('/urls', (req, res) => {
     res.render('urls_index', templateVars);
 });
 
+// app.get('/urls/new', (req, res) => {
+//   let templateVars = {
+//     urls: urlDatabase,
+//     username: getUsername(req.cookies["user_id"]),
+//     email: users[req.cookies.user_id].email
+//     // username: users[req.cookies["userId"]].email
+//   };
+//   if (email === undefined) {
+//     res.redirect('/login');
+//   } else {
+//
+//   res.render("urls_new", templateVars);
+// }
+// });
+
 app.get('/urls/new', (req, res) => {
-  let templateVars = {
-    urls: urlDatabase,
-    username: getUsername(req.cookies["user_id"]),
-    email: users[req.cookies.user_id].email
-    // username: users[req.cookies["userId"]].email
-  };
-  res.render("urls_new", templateVars);
+  if (req.cookies.user_id === undefined) {
+    res.redirect('/login');
+  } else {
+    let templateVars = {
+      urls: urlDatabase,
+      username: getUsername(req.cookies["user_id"]),
+      email: users[req.cookies.user_id].email
+    }
+    res.render("urls_new", templateVars);
+  }
 });
+
 
 app.get('/urls/:id', (req, res) => {
     let templateVars = {
