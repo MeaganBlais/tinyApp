@@ -6,12 +6,16 @@
   <header>
     <% include partials/_header %>
   </header>
+  <% if (username === 'guest') { %>
+
+  <% } else { %>
     <form action="/urls/<%= shortURL %>" method="POST" style="">
         <label for="shortURL">ShortURL: <%= shortURL %></label><br>
         <label for="longURL"></label>
         <input id="longURL" type="text" name="longURL" placeholder= "<%= longURL %>" style="">
         <input type="submit" value="Update">
     </form>
+  <% } %>
 
 
 </body>

@@ -2,12 +2,18 @@
 <html lang="en">
 <head> </head>
   <body>
-    <header>Welcome! <%= email %></header>
-        <form action="/logout" method="POST" style="">
-          <label for="logout"></label>
-          <input type="submit" value="logout">
-        </form>
+    <% if (username === 'guest') { %>
+      <header>Welcome! Please login or register.</header>
         <a href="/login">login</a>
         <a href="/register">register</a>
+    <% } else { %>
+      <form action="/logout" method="POST" style="">
+      <header>Welcome! <%= email %></header>
+        <label for="logout"></label>
+        <input type="submit" value="logout">
+      </form>
+        <!-- <a href="/login">login</a>
+        <a href="/register">register</a> -->
+    <% } %>
   </body>
 </html>

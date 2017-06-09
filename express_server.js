@@ -58,35 +58,28 @@ app.get('/register', (req, res) => {
 })
 
 app.get('/urls', (req, res) => {
+  if (req.cookies.user_id === undefined) {
     let templateVars = {
-      urls: urlDatabase,
+      username: 'guest'
+    }
+    res.render('urls_index', templateVars);
+  } else {
+    let templateVars = {
+      user_id: urlDatabase,
       username: getUsername(req.cookies["user_id"]),
       email: users[req.cookies.user_id].email
     };
+    // console.log('ln 69' + templateVars)
     res.render('urls_index', templateVars);
+  }
 });
-
-// app.get('/urls/new', (req, res) => {
-//   let templateVars = {
-//     urls: urlDatabase,
-//     username: getUsername(req.cookies["user_id"]),
-//     email: users[req.cookies.user_id].email
-//     // username: users[req.cookies["userId"]].email
-//   };
-//   if (email === undefined) {
-//     res.redirect('/login');
-//   } else {
-//
-//   res.render("urls_new", templateVars);
-// }
-// });
 
 app.get('/urls/new', (req, res) => {
   if (req.cookies.user_id === undefined) {
     res.redirect('/login');
   } else {
     let templateVars = {
-      urls: urlDatabase,
+      user_id: urlDatabase,
       username: getUsername(req.cookies["user_id"]),
       email: users[req.cookies.user_id].email
     }
@@ -96,6 +89,12 @@ app.get('/urls/new', (req, res) => {
 
 
 app.get('/urls/:id', (req, res) => {
+  if (req.cookies.user_id === undefined) {
+    let templateVars = {
+      username: 'guest'
+    }
+    res.render('urls_show', templateVars);
+  } else {
     let templateVars = {
       shortURL: req.params.id,
       longURL: urlDatabase[req.params.id],
@@ -103,6 +102,7 @@ app.get('/urls/:id', (req, res) => {
       email: users[req.cookies.user_id].email
     };
     res.render('urls_show', templateVars);
+  }
 });
 
 app.get('/u/:shortURL', (req, res) => {
@@ -111,7 +111,6 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-    // gen a random user id
     let user_id = generateRandomString();
 
     for (x in users) {
@@ -126,14 +125,13 @@ app.post('/register', (req, res) => {
             email: req.body.email,
             password: req.body.password
           }
+          // console.log(users) //ensuring registration occurs
           res.cookie("user_id", user_id);
       };
     }
-    console.log(users);
+    // console.log(users);
   res.redirect('/urls');
 });
-
-
 
 app.post('/login', (req, res) => {
     let user;
@@ -144,7 +142,7 @@ app.post('/login', (req, res) => {
       for (x in users) { // user instead of x
       if (users[x].email === req.body.email && users[x].password === req.body.password) {
           res.cookie("user_id", users[x].id);
-          res.redirect('/');
+          res.redirect('/urls');
         } else if (users[x].email !== req.body.email || users[x].password !== req.body.password) {
             return res.status(403).send('Your password and/or email do not match our records.');
         } else {
@@ -154,8 +152,6 @@ app.post('/login', (req, res) => {
       };
     };
   });
-
-
 
 app.post('/logout', (req, res) => {
   res.clearCookie('user_id');
