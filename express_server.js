@@ -58,7 +58,8 @@ app.get('/register', (req, res) => {
 app.get('/urls', (req, res) => {
     let templateVars = {
       urls: urlDatabase,
-      username: getUsername(req.cookies["user_id"])
+      username: getUsername(req.cookies["user_id"]),
+      email: users[req.cookies.user_id].email
     };
     res.render('urls_index', templateVars);
 });
@@ -66,7 +67,8 @@ app.get('/urls', (req, res) => {
 app.get('/urls/new', (req, res) => {
   let templateVars = {
     urls: urlDatabase,
-    username: getUsername(req.cookies["user_id"])
+    username: getUsername(req.cookies["user_id"]),
+    email: users[req.cookies.user_id].email
     // username: users[req.cookies["userId"]].email
   };
   res.render("urls_new", templateVars);
@@ -76,7 +78,8 @@ app.get('/urls/:id', (req, res) => {
     let templateVars = {
       shortURL: req.params.id,
       longURL: urlDatabase[req.params.id],
-      username: getUsername(req.cookies["user_id"])
+      username: getUsername(req.cookies["user_id"]),
+      email: users[req.cookies.user_id].email
     };
     res.render('urls_show', templateVars);
 });
@@ -92,13 +95,11 @@ app.post('/register', (req, res) => {
 
     for (x in users) {
       if (users[x].email === req.body.email) {
-        console.log('compare is email already exists');
         return res.status(400).send('Email address already in system.');
       } else if (req.body.email === "" || req.body.password === "") {
-        console.log('check valid');
         return res.status(400).send('Please enter BOTH email and password.');
       } else {
-          console.log('add the same user', user_id, 'one more time!');
+        // console.log('testing loop')
           users[user_id] = {
             id: user_id,
             email: req.body.email,
@@ -121,10 +122,10 @@ app.post('/login', (req, res) => {
     } else {
       for (x in users) { // user instead of x
       if (users[x].email === req.body.email && users[x].password === req.body.password) {
-          res.cookie("user_Id", users[x].id);
-          res.redirect('/urls');
+          res.cookie("user_id", users[x].id);
+          res.redirect('/');
         } else if (users[x].email !== req.body.email || users[x].password !== req.body.password) {
-            return res.status(400).send('Your password and/or email do not match our records.');
+            return res.status(403).send('Your password and/or email do not match our records.');
         } else {
           return undefined;
           // res.redirect('/register')
@@ -136,7 +137,7 @@ app.post('/login', (req, res) => {
 
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('username');
+  res.clearCookie('user_id');
   res.redirect('/urls');
 });
 
@@ -144,7 +145,6 @@ app.post("/urls", (req, res) => {
     let longURL = req.body.longURL;
     let shortURL = generateRandomString();
     urlDatabase [shortURL] = longURL;
-    console.log(urlDatabase)
     res.redirect("/urls/" + shortURL);
 });
 
