@@ -3,11 +3,14 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
+// const password = req.body.password;
+// const hashed_password = bcrypt.hashSync(password, 10);
 
 const urlDatabase = {
   'user_id':
     {'b2xVn2': 'http://www.lighthouselabs.ca', 'dsfsgg': 'http://www.google.com'},
-  'user_id':
+  'user_id_2':
     {'9sm5xK': 'http://www.google.com'}
 };
 
@@ -21,7 +24,11 @@ const users = {
     id: "user2RandomID",
     email: "user2@example.com",
     password: "dishwasher-funk"
-  }
+  },
+  'xbUeyZ': {
+    id: 'xbUeyZ',
+    email: 'test1@test.com',
+    password: 'test1' }
 }
 
 const getUsername = function (userId) {
@@ -123,15 +130,42 @@ app.post('/register', (req, res) => {
           users[user_id] = {
             id: user_id,
             email: req.body.email,
-            password: req.body.password
+            password: bcrypt.hashSync(req.body.password, 10)
           }
-          // console.log(users) //ensuring registration occurs
+          console.log(users); //ensuring registration occurs
           res.cookie("user_id", user_id);
       };
     }
     // console.log(users);
   res.redirect('/urls');
 });
+
+
+
+// //=============================================================================
+// // trying to debug login
+// app.post('/login', (req, res) => {
+//     let user;
+//
+//     if (req.body.email === "" || req.body.password === "") {
+//         return res.status(400).send('Please enter BOTH email and password.');
+//     } else {
+//       for (x in users) { // user instead of x
+//       if (users[x].email === req.body.email) {
+//           res.cookie("user_id", users[x].id);
+//           // console.log('login' + users) // use to double check passwords
+//           res.redirect('/urls');
+//         } else if (users[x].email !== req.body.email) {
+//             return res.status(403).send('Your password and/or email do not match our records.');
+//         } else {
+//           return undefined;
+//           // res.redirect('/register')
+//         }
+//       };
+//     };
+//   });
+// //=============================================================================
+
 
 app.post('/login', (req, res) => {
     let user;
@@ -140,13 +174,14 @@ app.post('/login', (req, res) => {
         return res.status(400).send('Please enter BOTH email and password.');
     } else {
       for (x in users) { // user instead of x
-      if (users[x].email === req.body.email && users[x].password === req.body.password) {
+      if (users[x].email === req.body.email && bcrypt.compareSync(req.body.password, users[x].password)) {
           res.cookie("user_id", users[x].id);
+          // console.log('login' + users) // use to double check passwords
           res.redirect('/urls');
-        } else if (users[x].email !== req.body.email || users[x].password !== req.body.password) {
-            return res.status(403).send('Your password and/or email do not match our records.');
-        } else {
-          return undefined;
+        } else if (users[x].email === req.body.email && !bcrypt.compareSync(req.body.password, users[x].password)) {
+            return res.status(403).send('Your email does not match our records.');
+        // } else {
+        //   return undefined;
           // res.redirect('/register')
         }
       };
