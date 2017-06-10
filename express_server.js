@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 8080;
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
 // const password = req.body.password;
 // const hashed_password = bcrypt.hashSync(password, 10);
@@ -42,7 +43,14 @@ const getUsername = function (userId) {
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser());
+
+app.use(cookieSession({
+  name: 'session',
+  keys: ['super-secret-key'],
+  // keys: [/*secret keys*/],
+   // cookie options -- expirations? -- apparently the formula below is 24 hrs
+  maxAge: 24 * 60 * 60 * 1000
+}));
 
 app.get('/', (req, res) => {
     res.end('Hello!');
@@ -65,7 +73,8 @@ app.get('/register', (req, res) => {
 })
 
 app.get('/urls', (req, res) => {
-  if (req.cookies.user_id === undefined) {
+  // if (req.cookies.user_id === undefined) {
+  if (req.session.user_id === undefined) {
     let templateVars = {
       username: 'guest'
     }
@@ -73,8 +82,9 @@ app.get('/urls', (req, res) => {
   } else {
     let templateVars = {
       user_id: urlDatabase,
-      username: getUsername(req.cookies["user_id"]),
-      email: users[req.cookies.user_id].email
+      // req.session.user_id: urlDatabase,
+      username: getUsername(req.session["user_id"]),
+      email: users[req.session.user_id].email
     };
     // console.log('ln 69' + templateVars)
     res.render('urls_index', templateVars);
@@ -82,13 +92,13 @@ app.get('/urls', (req, res) => {
 });
 
 app.get('/urls/new', (req, res) => {
-  if (req.cookies.user_id === undefined) {
+  if (req.session.user_id === undefined) {
     res.redirect('/login');
   } else {
     let templateVars = {
       user_id: urlDatabase,
-      username: getUsername(req.cookies["user_id"]),
-      email: users[req.cookies.user_id].email
+      username: getUsername(req.session["user_id"]),
+      email: users[req.session.user_id].email
     }
     res.render("urls_new", templateVars);
   }
@@ -96,7 +106,7 @@ app.get('/urls/new', (req, res) => {
 
 
 app.get('/urls/:id', (req, res) => {
-  if (req.cookies.user_id === undefined) {
+  if (req.session.user_id === undefined) {
     let templateVars = {
       username: 'guest'
     }
@@ -105,8 +115,8 @@ app.get('/urls/:id', (req, res) => {
     let templateVars = {
       shortURL: req.params.id,
       longURL: urlDatabase[req.params.id],
-      username: getUsername(req.cookies["user_id"]),
-      email: users[req.cookies.user_id].email
+      username: getUsername(req.session["user_id"]),
+      email: users[req.session.user_id].email
     };
     res.render('urls_show', templateVars);
   }
@@ -133,39 +143,13 @@ app.post('/register', (req, res) => {
             password: bcrypt.hashSync(req.body.password, 10)
           }
           console.log(users); //ensuring registration occurs
-          res.cookie("user_id", user_id);
+          // res.session("user_id", user_id);
+          req.session.user_id = user_id;
       };
     }
     // console.log(users);
   res.redirect('/urls');
 });
-
-
-
-// //=============================================================================
-// // trying to debug login
-// app.post('/login', (req, res) => {
-//     let user;
-//
-//     if (req.body.email === "" || req.body.password === "") {
-//         return res.status(400).send('Please enter BOTH email and password.');
-//     } else {
-//       for (x in users) { // user instead of x
-//       if (users[x].email === req.body.email) {
-//           res.cookie("user_id", users[x].id);
-//           // console.log('login' + users) // use to double check passwords
-//           res.redirect('/urls');
-//         } else if (users[x].email !== req.body.email) {
-//             return res.status(403).send('Your password and/or email do not match our records.');
-//         } else {
-//           return undefined;
-//           // res.redirect('/register')
-//         }
-//       };
-//     };
-//   });
-// //=============================================================================
-
 
 app.post('/login', (req, res) => {
     let user;
@@ -175,7 +159,8 @@ app.post('/login', (req, res) => {
     } else {
       for (x in users) { // user instead of x
       if (users[x].email === req.body.email && bcrypt.compareSync(req.body.password, users[x].password)) {
-          res.cookie("user_id", users[x].id);
+          // res.session("user_id", users[x].id);
+          req.session.user_id = users[x].id;
           // console.log('login' + users) // use to double check passwords
           res.redirect('/urls');
         } else if (users[x].email === req.body.email && !bcrypt.compareSync(req.body.password, users[x].password)) {
@@ -189,7 +174,8 @@ app.post('/login', (req, res) => {
   });
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('user_id');
+  // res.clearCookie('user_id');
+  req.session = null;
   res.redirect('/urls');
 });
 
