@@ -11,11 +11,11 @@
 
   <% } else { %>
   <ul>
-      <% for (url in user_id) { %>
+      <% for (url in urls) { %>
           <li>
-            <form action= <%= `/urls/${url}/delete` %> method="POST" style="margin:150px;">
-                <label> <%= url %> <%= user_id[url] %> </label>
-                <a href= "/urls/<%=url%>"> edit </a>
+            <form action= "<%= `/urls/${urls[url].shortURL}/delete` %>" method="POST" style="margin:150px;">
+                <label> <%= urls[url].longURL %> <%= urls[url].shortURL %> </label>
+                <a href= "/urls/<%=urls[url].shortURL%>"> edit </a>
                 <input type="submit" value="Delete">
             </form>
           </li>
