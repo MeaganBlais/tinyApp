@@ -43,7 +43,7 @@ const users = {
   function generateRandomString() {
     let result = '';
     let charset = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    for (var i=0; i < 6; i++) {
+    for (let i=0; i < 6; i++) {
       result += charset[Math.floor(Math.random() * charset.length)];
     }
     return result;
