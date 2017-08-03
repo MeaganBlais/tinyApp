@@ -1,19 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> </head>
+<head>
+  <title>URL Shortener</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style>
+
+  .alert {
+    margin-top: -30px;
+  }
+  </style>
+</head>
+
+
+
   <body>
-    <% if (username === 'guest') { %>
-      <header>Welcome! Please login or register.</header>
-        <a href="/login">login</a>
-        <a href="/register">register</a>
-    <% } else { %>
-      <form action="/logout" method="POST" style="">
-      <header>Welcome! <%= email %></header>
-        <label for="logout"></label>
-        <input type="submit" value="logout">
-      </form>
-      <a href="/urls/new">New Url</a>
-      <a href="/urls">My Urls</a>
-    <% } %>
+
+      <% if (username === 'guest') { %>
+        <div class="jumbotron text-center">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-1">
+                <a href="/register">Register</a>
+              </div>
+              <div class="col-sm-1">
+                <a href="/login">Login</a>
+              </div>
+              <div class="col-sm-8"
+                <header>Welcome! Please login or register.</header>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="jumbotron text-center">
+          <div class"container">
+            <div class="row">
+              <div class="col-sm-1">
+                <a href="/urls/new">New Url</a>
+              </div>
+
+              <div class="col-sm-1">
+                <a href="/urls">My Urls</a>
+              </div>
+
+              <div class="col-sm-2">
+              </div>
+
+              <div class="col-sm-4">
+                <h2>Welcome! <%= email %></h2>
+              </div>
+
+              <div class="col-sm-2">
+              </div>
+
+              <div class="col-sm-2">
+                <form action="/logout" method="POST" style="">
+                  <label for="logout"></label>
+                  <input type="submit" value="logout">
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      <% } %>
+
   </body>
+
+
+
 </html>

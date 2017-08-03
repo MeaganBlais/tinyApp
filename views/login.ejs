@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> </head>
+<head>
+  <title>TinyApp</title>
+</head>
+<header><% include partials/_navbar %></header>
   <body>
-    <header>Welcome!</header>
-      <form action="/login" method="POST" style="">
-        <label for="email">Enter email:</label>
-        <input id="email" type="email" name="email" placeholder="email" style="">
-        <label for="password">Enter password:</label>
-        <input id="password" type="password" name="password" placeholder="password" style="">
-        <input type="submit" value="Submit">
-      </form>
+    <div class="container text-center">
+
+
+        <form action="/login" method="POST" style="">
+          <div class="col-md-6">
+            <label for="email">Enter email:</label>
+            <input id="email" type="email" name="email" placeholder="email" style="">
+          </div>
+          <div class="col-md-6">
+            <label for="password">Enter password:</label>
+            <input id="password" type="password" name="password" placeholder="password" style="">
+          </div>
+          <div>
+            <input type="submit" value="Submit">
+          </div>
+        </form>
         <form action="/logout" method="POST" style="">
           <label for="logout"></label>
           <input type="submit" value="logout">
