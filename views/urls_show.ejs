@@ -9,12 +9,23 @@
   <% if (username === 'guest') { %>
 
   <% } else { %>
-    <form action="/urls/<%= shortURL %>" method="POST" style="">
-        <label for="shortURL">ShortURL: <%= shortURL %></label><br>
-        <label for="longURL"> LongURL </label>
-        <input id="longURL" type="text" name="longURL" placeholder="<%= longURL %>" style="">
-        <input type="submit" value="Update">
-    </form>
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th>Short URL</th>
+          <th>Long URL</th>
+          <th>Update</th>
+        </tr>
+      </thead>
+      <form action="/urls/<%= shortURL %>" method="POST" style="">
+        <tr>
+          <td><%= shortURL %></td>
+          <td><input id="longURL" type="text" name="longURL" placeholder="<%= longURL %>" style=""></td>
+          <td><input type="submit" value="Update"></td>
+          </td>
+        </tr>
+      </form>
+  </table>
   <% } %>
 
 

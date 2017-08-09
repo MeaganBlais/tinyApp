@@ -11,13 +11,15 @@
   <% if (username === 'guest') { %>
 
   <% } else { %>
-    <table class="table table-striped">
-      <tr>
-        <th>Long URL</th>
-        <th>Short URL</th>
-        <th>Edit</th>
-        <th>Delete</th>
-      </tr>
+    <table class="table table-hover">
+      <thead>
+        <tr class="bg-primary">
+          <th>Long URL</th>
+          <th>Short URL</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
         <% for (url in urls) { %>
           <form action= "<%= `/urls/${urls[url].shortURL}/delete` %>" method="POST" style="margin:150px;">
             <tr>
