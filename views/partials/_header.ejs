@@ -16,7 +16,7 @@
               <div class="col-sm-1">
                 <a href="/login">Login</a>
               </div>
-              <div class="col-sm-8"
+              <div class="col-sm-8">
                 <header>Welcome! Please login or register.</header>
               </div>
             </div>
@@ -24,32 +24,32 @@
         </div>
       <% } else { %>
         <div class="jumbotron text-center">
-          <div class"container">
+          <div class="container">
             <div class="row">
-              <div class="col-sm-1">
-                <a href="/urls/new">New Url</a>
-              </div>
-
-              <div class="col-sm-1">
-                <a href="/urls">My Urls</a>
-              </div>
-
-              <div class="col-sm-2">
-              </div>
-
-              <div class="col-sm-4">
-                <h2>Welcome! <%= email %></h2>
-              </div>
-
-              <div class="col-sm-2">
-              </div>
-
+              
               <div class="col-sm-2">
                 <form action="/logout" method="POST" style="">
                   <label for="logout"></label>
                   <input type="submit" value="logout">
                 </form>
               </div>
+
+
+              <div class="col-sm-6">
+                <h2>Welcome! <%= email %></h2>
+              </div>
+
+
+              <div class="col-sm-2">
+                <a href="/urls/new">New Url</a>
+              </div>
+
+              <div class="col-sm-2">
+                <a href="/urls">My Urls</a>
+              </div>
+
+
+
 
             </div>
           </div>

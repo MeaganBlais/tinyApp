@@ -6,20 +6,24 @@
 <header><% include partials/_navbar %></header>
   <body>
     <div class="container text-center">
+      
 
-      <form action="/register" method="POST" style="">
-        <div class="col-md-6">
-          <label for="email">Enter email:</label>
-          <input id="email" type="email" name="email" placeholder="email" style="">
-        </div>
-        <div class="col-md-6">
-          <label for="password">Enter password:</label>
-          <input id="password" type="password" name="password" placeholder="password" style="">
-        </div>
-        <div>
-          <input type="submit" value="Submit">
-        </div>
-      </form>
+        <form action="/register" method="POST" style="">
+          <div class="col-sm-12">
+            <label for="email">Enter email:</label>
+            <input id="email" type="email" name="email" placeholder="email" style="">
+          </div>
+          <div class="col-sm-12">
+            <label for="password">Enter password:</label>
+            <input id="password" type="password" name="password" placeholder="password" style="">
+          </div>
+
+
+          <div>
+            <input type="submit" value="Submit">
+          </div>
+        </form>
+
     </div>
   </body>
 </html>
