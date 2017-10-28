@@ -2,10 +2,10 @@
   "name": "tinyapp",
   "version": "0.0.1",
   "description": "student project",
-  "main": "express_server.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node express_server.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
